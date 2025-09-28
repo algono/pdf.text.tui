@@ -2,13 +2,11 @@
 #'
 #' @param pdf_path Path to the PDF file
 #' @return A dataframe with columns: page, line, text
+#' @importFrom pdftools pdf_text
 #' @export
 extract_pdf_text <- function(pdf_path) {
   if (!requireNamespace("pdftools", quietly = TRUE)) {
     stop("Package 'pdftools' is required but not installed.")
-  }
-  if (!requireNamespace("dplyr", quietly = TRUE)) {
-    stop("Package 'dplyr' is required but not installed.")
   }
 
   if (!file.exists(pdf_path)) {
@@ -24,8 +22,10 @@ extract_pdf_text <- function(pdf_path) {
     page = rep(1:length(pdf_content), sapply(strsplit(pdf_content, "\n"), length)),
     line = 1:length(text_lines),
     text = trimws(text_lines) # remove extra spaces
-  ) %>%
-    dplyr::filter(text != "") # remove empty lines
+  )
+
+  # Remove empty lines
+  df_text <- df_text[df_text$text != "", ]
 
   return(df_text)
 }
