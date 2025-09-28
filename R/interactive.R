@@ -64,8 +64,6 @@ interactive_filter <- function(lines) {
       result <- history[[length(history)]]  # restore state
       history <- history[-length(history)]   # remove from history
       i <- i - 1  # go back to previous line
-      cat("↶ Undone\n")
-      Sys.sleep(0.8)
       next
 
     } else if (option == "q") {
